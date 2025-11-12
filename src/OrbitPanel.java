@@ -12,7 +12,9 @@ public class OrbitPanel extends JPanel implements ActionListener {
 
     // Розміри орбіти
     private final int SEMI_MAJOR_AXIS = 250; // Велика піввісь (горизонтальна)
-    private final int SEMI_MINOR_AXIS = 150; // Мала піввісь (вертикальна)
+
+    // Мала піввісь МАЄ БУТИ МЕНШОЮ за радіус планети, щоб супутник ховався
+    private final int SEMI_MINOR_AXIS = 50; // Мала піввісь (вертикальна)
 
     // Розміри об'єктів
     private final int PLANET_RADIUS = 50;
@@ -21,7 +23,7 @@ public class OrbitPanel extends JPanel implements ActionListener {
     // Кут для анімації
     private double angle = 0;
     // Швидкість обертання (радіан за кадр)
-    private final double angularVelocity = 0.01;
+    private final double angularVelocity = 0.03;
 
     // Таймер для анімації
     private Timer timer;
@@ -32,7 +34,6 @@ public class OrbitPanel extends JPanel implements ActionListener {
         setBackground(Color.BLACK);
 
         // Ініціалізуємо та запускаємо таймер
-        // Таймер спрацьовуватиме приблизно 60 разів на секунду (1000мс / 16мс ≈ 60 FPS)
         timer = new Timer(16, this);
         timer.start();
     }
@@ -79,24 +80,26 @@ public class OrbitPanel extends JPanel implements ActionListener {
         );
 
         // --- 2. Розраховуємо позицію супутника ---
-        // Використовуємо параметричні рівняння еліпса
         int satelliteX = (int) (centerX + SEMI_MAJOR_AXIS * Math.cos(angle));
         int satelliteY = (int) (centerY + SEMI_MINOR_AXIS * Math.sin(angle));
 
         // --- 3. Логіка затінення (Порядок малювання) ---
 
         // Визначаємо, чи супутник "попереду" (Y < centerY)
+        // (Пам'ятаємо, що в Swing Y=0 вгорі)
         boolean isInFront = satelliteY < centerY;
 
-        // 3.1. Якщо супутник позаду, малюємо його ПЕРШИМ
+        // 3.1. Якщо супутник позаду (його Y > centerY), малюємо його ПЕРШИМ
         if (!isInFront) {
             drawSatellite(g2d, satelliteX, satelliteY);
         }
 
         // 3.2. Малюємо планету (ЗАВЖДИ)
+        // Планета буде намальована поверх супутника, якщо він позаду
         drawPlanet(g2d, centerX, centerY);
 
-        // 3.3. Якщо супутник попереду, малюємо його ОСТАННІМ
+        // 3.3. Якщо супутник попереду (його Y < centerY), малюємо його ОСТАННІМ
+        // Супутник буде намальований поверх планети
         if (isInFront) {
             drawSatellite(g2d, satelliteX, satelliteY);
         }
