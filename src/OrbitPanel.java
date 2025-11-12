@@ -14,7 +14,7 @@ public class OrbitPanel extends JPanel implements ActionListener {
     private final int SEMI_MAJOR_AXIS = 250; // Велика піввісь (горизонтальна)
 
     // Мала піввісь МАЄ БУТИ МЕНШОЮ за радіус планети, щоб супутник ховався
-    private final int SEMI_MINOR_AXIS = 50; // Мала піввісь (вертикальна)
+    private final int SEMI_MINOR_AXIS = 40; // Мала піввісь (вертикальна)
 
     // Розміри об'єктів
     private final int PLANET_RADIUS = 50;
