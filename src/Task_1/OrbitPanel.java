@@ -89,7 +89,7 @@ public class OrbitPanel extends JPanel implements ActionListener {
 
         // Визначаємо, чи супутник "попереду" (Y < centerY)
         // (Пам'ятаємо, що в Swing Y=0 вгорі)
-        boolean isInFront = satelliteY < centerY;
+        boolean isInFront = satelliteY > centerY;
 
         // 3.1. Якщо супутник позаду (його Y > centerY), малюємо його ПЕРШИМ
         if (!isInFront) {
